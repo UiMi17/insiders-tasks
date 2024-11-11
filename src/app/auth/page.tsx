@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import * as React from 'react';
 import Box from '@mui/material/Box';
@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
+import { registerUser } from '@/services/firebaseAuth';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -101,84 +102,80 @@ const Auth = () => {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (nameError || emailError || passwordError) {
-      event.preventDefault();
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    registerUser(data.get('email'), data.get('password'), data.get('name'));
+    //TODO: Make some worth of it with loading suspension+
   };
 
-  return  <>
+  return <>
     <CssBaseline enableColorScheme />
-    <SignUpContainer direction="column" justifyContent="space-between">
-      <Card variant="outlined">
+    <SignUpContainer direction='column' justifyContent='space-between'>
+      <Card variant='outlined'>
         <Typography
-          component="h1"
-          variant="h4"
+          component='h1'
+          variant='h4'
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
         >
           Sign up
         </Typography>
         <Box
-          component="form"
+          component='form'
           onSubmit={(ev) => handleSubmit(ev)}
           sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
         >
           <FormControl>
-            <FormLabel htmlFor="name">Full name</FormLabel>
+            <FormLabel htmlFor='name'>Full name</FormLabel>
             <TextField
-              autoComplete="name"
-              name="name"
+              autoComplete='name'
+              name='name'
               required
               fullWidth
-              id="name"
-              placeholder="Jon Snow"
+              id='name'
+              placeholder='Jon Snow'
               error={nameError}
               helperText={nameErrorMessage}
               color={nameError ? 'error' : 'primary'}
             />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="email">Email</FormLabel>
+            <FormLabel htmlFor='email'>Email</FormLabel>
             <TextField
               required
               fullWidth
-              id="email"
-              placeholder="your@email.com"
-              name="email"
-              autoComplete="email"
-              variant="outlined"
+              id='email'
+              placeholder='your@email.com'
+              name='email'
+              autoComplete='email'
+              variant='outlined'
               error={emailError}
               helperText={emailErrorMessage}
               color={passwordError ? 'error' : 'primary'}
             />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="password">Password</FormLabel>
+            <FormLabel htmlFor='password'>Password</FormLabel>
             <TextField
               required
               fullWidth
-              name="password"
-              placeholder="••••••"
-              type="password"
-              id="password"
-              autoComplete="new-password"
-              variant="outlined"
+              name='password'
+              placeholder='••••••'
+              type='password'
+              id='password'
+              autoComplete='new-password'
+              variant='outlined'
               error={passwordError}
               helperText={passwordErrorMessage}
               color={passwordError ? 'error' : 'primary'}
             />
           </FormControl>
           <Button
-            type="submit"
+            type='submit'
             fullWidth
-            variant="contained"
+            variant='contained'
             onClick={validateInputs}
           >
             Sign up
@@ -187,8 +184,8 @@ const Auth = () => {
             Already have an account?{' '}
             <span>
                 <Link
-                  href="#"
-                  variant="body2"
+                  href='#'
+                  variant='body2'
                   sx={{ alignSelf: 'center' }}
                 >
                   Sign in
@@ -198,7 +195,7 @@ const Auth = () => {
         </Box>
       </Card>
     </SignUpContainer>
-  </>
-}
+  </>;
+};
 
 export default Auth;
